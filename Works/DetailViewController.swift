@@ -12,10 +12,9 @@ class DetailViewController: UIViewController {
     
     @IBOutlet weak var workField: UITextField!
     @IBOutlet weak var nameField: UITextField!
-    @IBOutlet weak var availableField: UITextField!
+    @IBOutlet weak var availableTimeField: UITextField!
     @IBOutlet weak var phoneNumberField: UITextField!
     @IBOutlet weak var notesView: UITextView!
-    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var locationField: UITextField!
@@ -26,23 +25,21 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         
         if worksItem == nil { // passing empty string for starter
-            worksItem = WorksItem(name: "", work: "", time: "", number: "", notes: "", image: UIImage)
+            worksItem = WorksItem(name: "", work: "", time: "", number: "", notes: "")
         }
         workField.text = worksItem.work
         nameField.text = worksItem.name
-        availableField.text = worksItem.time
+        availableTimeField.text = worksItem.time
         phoneNumberField.text = worksItem.number
         notesView.text = worksItem.notes
-        imageView.image = worksItem.image
         
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         worksItem.work = workField.text!
         worksItem.name = nameField.text!
-        worksItem.time = availableField.text!
+        worksItem.time = availableTimeField.text!
         worksItem.number = phoneNumberField.text!
         worksItem.notes = notesView.text!
-        worksItem.image = imageView.image!
         
     }
     
@@ -55,20 +52,20 @@ class DetailViewController: UIViewController {
         }
     }
     @IBAction func saveBarButtonPressed(_ sender: Any) {
-        worksItem.work = workField.text!
-        worksItem.name = nameField.text!
-        worksItem.time = availableField.text!
-        worksItem.number = phoneNumberField.text!
-        worksItem.notes = notesView.text!
-        worksItem.image = imageView.image!
-        
-        worksItem.saveData { success in
-            if success {
-                self.leaveViewController()
-            }else{
-                print("*** ERROR: Couldn't leave this view controller because data wasn't saved")
-            }
-        }
-    }
+//        worksItem.work = workField.text!
+//        worksItem.name = nameField.text!
+//        worksItem.time = availableField.text!
+//        worksItem.number = phoneNumberField.text!
+//        worksItem.notes = notesView.text!
+//
+//        worksItem.saveData { success in
+//            if success {
+//                self.leaveViewController()
+//            }else{
+//                print("*** ERROR: Couldn't leave this view controller because data wasn't saved")
+//            }
+//        }
+//    }
     
+}
 }
