@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8206CFD22451DD6E005DF5E7 /* Works.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8206CFD12451DD6E005DF5E7 /* Works.swift */; };
+		8206CFD22451DD6E005DF5E7 /* WorksItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8206CFD12451DD6E005DF5E7 /* WorksItem.swift */; };
 		8206CFD62451E6B5005DF5E7 /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8206CFD52451E6B5005DF5E7 /* DetailTableViewController.swift */; };
 		822264FD24532FFE001FCEF6 /* JobImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822264FC24532FFE001FCEF6 /* JobImageViewController.swift */; };
 		825433B2244DECC80070CCCB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825433B1244DECC80070CCCB /* AppDelegate.swift */; };
@@ -24,7 +24,7 @@
 /* Begin PBXFileReference section */
 		1DA350613F1BFDC9098DE495 /* Pods-Works.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Works.debug.xcconfig"; path = "Target Support Files/Pods-Works/Pods-Works.debug.xcconfig"; sourceTree = "<group>"; };
 		7882D1CAFB17E0A4D7795F1A /* Pods-Works.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Works.release.xcconfig"; path = "Target Support Files/Pods-Works/Pods-Works.release.xcconfig"; sourceTree = "<group>"; };
-		8206CFD12451DD6E005DF5E7 /* Works.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Works.swift; sourceTree = "<group>"; };
+		8206CFD12451DD6E005DF5E7 /* WorksItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorksItem.swift; sourceTree = "<group>"; };
 		8206CFD52451E6B5005DF5E7 /* DetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
 		822264FC24532FFE001FCEF6 /* JobImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobImageViewController.swift; sourceTree = "<group>"; };
 		825433AE244DECC80070CCCB /* Works.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Works.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -84,7 +84,7 @@
 			children = (
 				825433B1244DECC80070CCCB /* AppDelegate.swift */,
 				825433B3244DECC80070CCCB /* SceneDelegate.swift */,
-				8206CFD12451DD6E005DF5E7 /* Works.swift */,
+				8206CFD12451DD6E005DF5E7 /* WorksItem.swift */,
 				82FBF546245417FB00FEB81E /* WorksItems.swift */,
 				825433B5244DECC80070CCCB /* ViewController.swift */,
 				8206CFD52451E6B5005DF5E7 /* DetailTableViewController.swift */,
@@ -242,7 +242,7 @@
 			files = (
 				822264FD24532FFE001FCEF6 /* JobImageViewController.swift in Sources */,
 				8206CFD62451E6B5005DF5E7 /* DetailTableViewController.swift in Sources */,
-				8206CFD22451DD6E005DF5E7 /* Works.swift in Sources */,
+				8206CFD22451DD6E005DF5E7 /* WorksItem.swift in Sources */,
 				825433B6244DECC80070CCCB /* ViewController.swift in Sources */,
 				825433B2244DECC80070CCCB /* AppDelegate.swift in Sources */,
 				825433B4244DECC80070CCCB /* SceneDelegate.swift in Sources */,

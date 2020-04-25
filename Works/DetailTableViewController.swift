@@ -18,15 +18,13 @@ class DetailTableViewController: UITableViewController {
     @IBOutlet weak var noteTextView: UITextView!
     
     
-    var worksItem: Works!
+    var worksItem: WorksItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if worksItem == nil { // passing empty string for starter
-            worksItem = Works()
-            //Look at Heckathon App에 있다! (UIImage())
-        }
+            worksItem = WorksItem()        }
         
         
     }

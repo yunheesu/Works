@@ -10,7 +10,7 @@ import Foundation
 import Firebase
 
 class WorksItems {
-    var workArray: [Works] = []
+    var workArray: [WorksItem] = []
     var db: Firestore!
     
     init() {
@@ -27,7 +27,7 @@ class WorksItems {
             // there are querySnapshot!.documents.count documents in teh spots snapshot
             for document in querySnapshot!.documents {
               // You'll have to be sure you've created an initializer in the singular class (Spot, below) that acepts a dictionary.
-                let work = Works(dictionary: document.data())
+                let work = WorksItem(dictionary: document.data())
                 work.documentID = document.documentID
                 self.workArray.append(work)
             }

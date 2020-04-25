@@ -22,11 +22,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // initializing the authUI var and setting the delegate are step [3]
-          authUI = FUIAuth.defaultAuthUI()
-          authUI?.delegate = self
+        authUI = FUIAuth.defaultAuthUI()
+        authUI?.delegate = self
         
         works = WorksItems()
-       
+        
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -48,48 +48,49 @@ class ViewController: UIViewController {
         if segue.identifier == "ShowDetail" {
             let destination = segue.destination as! DetailTableViewController
             let selectedIndexPath = tableView.indexPathForSelectedRow!
-            destination.work = works.workArray[selectedIndexPath.row]
+            destination.worksItem = works.workArray[selectedIndexPath.row]
         }
-
-    // VITAL: This gist includes key changes to make sure "cancel" works with iOS 13.
-    func signIn() {
-        let providers: [FUIAuthProvider] = [
-            FUIGoogleAuth(),
-        ]
-        if authUI.auth?.currentUser == nil {
-            self.authUI?.providers = providers
-            let loginViewController = authUI.authViewController()
-            loginViewController.modalPresentationStyle = .fullScreen
-            present(loginViewController, animated: true, completion: nil)
-        } else {
-            tableView.isHidden = false
+        
+        // VITAL: This gist includes key changes to make sure "cancel" works with iOS 13.
+        func signIn() {
+            let providers: [FUIAuthProvider] = [
+                FUIGoogleAuth(),
+            ]
+            if authUI.auth?.currentUser == nil {
+                self.authUI?.providers = providers
+                let loginViewController = authUI.authViewController()
+                loginViewController.modalPresentationStyle = .fullScreen
+                present(loginViewController, animated: true, completion: nil)
+            } else {
+                tableView.isHidden = false
+            }
         }
+        
+        func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            if segue.identifier == "ShowDetail" {
+                let destination = segue.destination as! DetailTableViewController
+                let selectedIndexPath = tableView.indexPathForSelectedRow!
+                destination.worksItem = works[selectedIndexPath.row]
+            }else{
+                if let selectedIndexPath = tableView.indexPathForSelectedRow { //not nil
+                    tableView.deselectRow(at: selectedIndexPath, animated: true)
+                }
+                
+            }
+        }
+        @IBAction func signOutPressed(_ sender: UIBarButtonItem) {
+            do {
+                try authUI!.signOut()
+                print("^^^ Successfully signed out!")
+                tableView.isHidden = true
+                signIn()
+            } catch {
+                tableView.isHidden = true
+                print("*** ERROR: Couldn't sign out")
+            }
+        }
+        
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-         if segue.identifier == "ShowDetail" {
-             let destination = segue.destination as! DetailTableViewController
-             let selectedIndexPath = tableView.indexPathForSelectedRow!
-             destination.worksItem = works[selectedIndexPath.row]
-         }else{
-             if let selectedIndexPath = tableView.indexPathForSelectedRow { //not nil
-                 tableView.deselectRow(at: selectedIndexPath, animated: true)
-             }
-            
-         }
-     }
-    @IBAction func signOutPressed(_ sender: UIBarButtonItem) {
-        do {
-            try authUI!.signOut()
-            print("^^^ Successfully signed out!")
-            tableView.isHidden = true
-            signIn()
-        } catch {
-            tableView.isHidden = true
-            print("*** ERROR: Couldn't sign out")
-        }
-    }
-
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
@@ -98,10 +99,9 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-         let cell = tableView.dequeueReusableCell(withIdentifier: "ShowSegue", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ShowSegue", for: indexPath)
         cell.textLabel?.text = "\(indexPath.row + 1) \(works.workArray[indexPath.row].work)"
-         print("👍🏻 dequeueing the table view cell for indexPath.row = \(indexPath.row) where the cell contains item \(works[indexPath.row])")
-         return cell
+        return cell
         
     }
     
@@ -147,5 +147,4 @@ extension ViewController: FUIAuthDelegate {
         loginViewController.view.addSubview(logoImageView) // Add ImageView to the login controller's main view
         return loginViewController
     }
-}
 }

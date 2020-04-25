@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import Firebase
 
-class Works {
+class WorksItem {
     var name: String
     var work: String
     var time: String
