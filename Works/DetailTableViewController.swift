@@ -18,45 +18,36 @@ class DetailTableViewController: UITableViewController {
     @IBOutlet weak var noteTextView: UITextView!
     
     
-    var worksItem: WorksItem!
+    var workItem: WorkItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if worksItem == nil { // passing empty string for starter
-            worksItem = WorksItem()        }
-        
+        if workItem == nil { // passing empty string for starter
+            workItem = WorkItem(dictionary: [String : Any])
+            
+        }
+        updateUserInterface()
         
     }
     
     func updateUserInterface() {
-        workField.text = worksItem.work
-        nameField.text = worksItem.name
-        availableTimeField.text = worksItem.time
-        locationField.text = worksItem.location
-        phoneNumberField.text = worksItem.number
-        noteTextView.text = worksItem.notes
+        workField.text = workItem.work
+        nameField.text = workItem.name
+        availableTimeField.text = workItem.time
+        locationField.text = workItem.location
+        phoneNumberField.text = workItem.number
+        noteTextView.text = workItem.notes
     }
     
     func updateFromUserInterface() {
-        worksItem.work = workField.text!
-        worksItem.name = nameField.text!
-        worksItem.location = locationField.text!
-        worksItem.time = availableTimeField.text!
-        worksItem.number = phoneNumberField.text!
-        worksItem.notes = noteTextView.text!
+        workItem.work = workField.text!
+        workItem.name = nameField.text!
+        workItem.location = locationField.text!
+        workItem.time = availableTimeField.text!
+        workItem.number = phoneNumberField.text!
+        workItem.notes = noteTextView.text!
     }
-    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        worksItem.work = workField.text!
-//        worksItem.name = nameField.text!
-//        worksItem.location = locationField.text!
-//        worksItem.time = availableTimeField.text!
-//        worksItem.number = phoneNumberField.text!
-//        worksItem.notes = noteTextView.text!
-//
-//
-//    }
     
     @IBAction func cancelBarButtonPressed(_ sender: UIBarButtonItem) {
         leaveViewController()
@@ -74,7 +65,7 @@ class DetailTableViewController: UITableViewController {
     @IBAction func saveBarButtonPressed(_ sender: UIBarButtonItem) {
         updateFromUserInterface()
         // When reusing this code, the only changes required may be to spot.saveData (you'll likley have a different object, and it is possible that you might pass in parameters if you're saving to a longer document reference path
-        worksItem.saveData { success in
+        workItem.saveData { success in
             if success {
                 self.leaveViewController()
             } else {

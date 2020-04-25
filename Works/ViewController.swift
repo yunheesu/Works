@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addBarButton: UIBarButtonItem!
     
-    var works: WorksItems!
+    var workItems: WorkItems!
     var authUI: FUIAuth!
     
     override func viewDidLoad() {
@@ -25,7 +25,7 @@ class ViewController: UIViewController {
         authUI = FUIAuth.defaultAuthUI()
         authUI?.delegate = self
         
-        works = WorksItems()
+        workItems = WorkItems()
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -33,7 +33,7 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        works.loadData {
+        workItems.loadData {
             self.tableView.reloadData()
         }
     }
@@ -44,12 +44,6 @@ class ViewController: UIViewController {
         signIn()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ShowDetail" {
-            let destination = segue.destination as! DetailTableViewController
-            let selectedIndexPath = tableView.indexPathForSelectedRow!
-            destination.worksItem = works.workArray[selectedIndexPath.row]
-        }
         
         // VITAL: This gist includes key changes to make sure "cancel" works with iOS 13.
         func signIn() {
@@ -66,11 +60,11 @@ class ViewController: UIViewController {
             }
         }
         
-        func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
             if segue.identifier == "ShowDetail" {
                 let destination = segue.destination as! DetailTableViewController
                 let selectedIndexPath = tableView.indexPathForSelectedRow!
-                destination.worksItem = works[selectedIndexPath.row]
+                destination.workItem = workItems.workArray[selectedIndexPath.row]
             }else{
                 if let selectedIndexPath = tableView.indexPathForSelectedRow { //not nil
                     tableView.deselectRow(at: selectedIndexPath, animated: true)
@@ -91,16 +85,15 @@ class ViewController: UIViewController {
         }
         
     }
-}
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return works.workArray.count
+        return workItems.workArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ShowSegue", for: indexPath)
-        cell.textLabel?.text = "\(indexPath.row + 1) \(works.workArray[indexPath.row].work)"
+        cell.textLabel?.text = "\(indexPath.row + 1) \(workItems.workArray[indexPath.row].work)"
         return cell
         
     }

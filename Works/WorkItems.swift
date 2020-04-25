@@ -1,5 +1,5 @@
 //
-//  WorksItems.swift
+//  WorkItems.swift
 //  Works
 //
 //  Created by Heesu Yun on 4/25/20.
@@ -9,8 +9,8 @@
 import Foundation
 import Firebase
 
-class WorksItems {
-    var workArray: [WorksItem] = []
+class WorkItems {
+    var workArray: [WorkItem] = []
     var db: Firestore!
     
     init() {
@@ -27,7 +27,7 @@ class WorksItems {
             // there are querySnapshot!.documents.count documents in teh spots snapshot
             for document in querySnapshot!.documents {
               // You'll have to be sure you've created an initializer in the singular class (Spot, below) that acepts a dictionary.
-                let work = WorksItem(dictionary: document.data())
+                let work = WorkItem(dictionary: document.data())
                 work.documentID = document.documentID
                 self.workArray.append(work)
             }
