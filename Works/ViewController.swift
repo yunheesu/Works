@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addBarButton: UIBarButtonItem!
     
-    var works: [WorksItem] = []
+    var works: WorksItems!
     var authUI: FUIAuth!
     
     override func viewDidLoad() {
@@ -24,15 +24,32 @@ class ViewController: UIViewController {
         // initializing the authUI var and setting the delegate are step [3]
           authUI = FUIAuth.defaultAuthUI()
           authUI?.delegate = self
+        
+        works = WorksItems()
        
         tableView.delegate = self
         tableView.dataSource = self
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        works.loadData {
+            self.tableView.reloadData()
+        }
+    }
+    
     // Be sure to call this from viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         signIn()
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowDetail" {
+            let destination = segue.destination as! DetailTableViewController
+            let selectedIndexPath = tableView.indexPathForSelectedRow!
+            destination.work = works.workArray[selectedIndexPath.row]
+        }
 
     // VITAL: This gist includes key changes to make sure "cancel" works with iOS 13.
     func signIn() {
@@ -72,45 +89,17 @@ class ViewController: UIViewController {
             print("*** ERROR: Couldn't sign out")
         }
     }
-    
-//    func loadData() {
-//        let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-//        let documentURL = directoryURL.appendingPathComponent("students").appendingPathExtension("json")
-//
-//        guard let data = try? Data(contentsOf: documentURL) else {return}
-//        let jsonDecoder = JSONDecoder()
-//        do {
-//            works = try jsonDecoder.decode(Array<String>.self, from: data)
-//            tableView.reloadData()
-//        } catch {
-//            print("*** decoding during loadData failed")
-//        }
-//    }
-//
-//    func saveData() { // saving data!
-//        let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-//        let documentURL = directoryURL.appendingPathComponent("students").appendingPathExtension("json")
-//
-//        let jsonEncoder = JSONEncoder()
-//        let data = try? jsonEncoder.encode(works)
-//        do {
-//            try data?.write(to: documentURL, options: .noFileProtection)
-//        } catch {
-//            print("*** Couldn't saveData")
-//        }
-//    }
-
 
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return works.count
+        return works.workArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
          let cell = tableView.dequeueReusableCell(withIdentifier: "ShowSegue", for: indexPath)
-        cell.textLabel?.text = "\(indexPath.row + 1) \(works[indexPath.row].work)"
+        cell.textLabel?.text = "\(indexPath.row + 1) \(works.workArray[indexPath.row].work)"
          print("👍🏻 dequeueing the table view cell for indexPath.row = \(indexPath.row) where the cell contains item \(works[indexPath.row])")
          return cell
         
@@ -158,4 +147,5 @@ extension ViewController: FUIAuthDelegate {
         loginViewController.view.addSubview(logoImageView) // Add ImageView to the login controller's main view
         return loginViewController
     }
+}
 }
