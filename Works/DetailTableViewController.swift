@@ -24,7 +24,7 @@ class DetailTableViewController: UITableViewController {
         super.viewDidLoad()
         
         if workItem == nil { // passing empty string for starter
-            workItem = WorkItem(dictionary: [String : Any])
+            workItem = WorkItem(name: "", work: "", time: "", location: "", number: "", notes: "", postingUserID: "", documentID: "")
             
         }
         updateUserInterface()

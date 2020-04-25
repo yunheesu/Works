@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addBarButton: UIBarButtonItem!
     
-    var workItems: WorkItems!
+    var workItemss: WorkItemss!
     var authUI: FUIAuth!
     
     override func viewDidLoad() {
@@ -25,7 +25,7 @@ class ViewController: UIViewController {
         authUI = FUIAuth.defaultAuthUI()
         authUI?.delegate = self
         
-        workItems = WorkItems()
+        workItemss = WorkItemss()
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -33,7 +33,7 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        workItems.loadData {
+        workItemss.loadData {
             self.tableView.reloadData()
         }
     }
@@ -44,56 +44,57 @@ class ViewController: UIViewController {
         signIn()
     }
     
-        
-        // VITAL: This gist includes key changes to make sure "cancel" works with iOS 13.
-        func signIn() {
-            let providers: [FUIAuthProvider] = [
-                FUIGoogleAuth(),
-            ]
-            if authUI.auth?.currentUser == nil {
-                self.authUI?.providers = providers
-                let loginViewController = authUI.authViewController()
-                loginViewController.modalPresentationStyle = .fullScreen
-                present(loginViewController, animated: true, completion: nil)
-            } else {
-                tableView.isHidden = false
-            }
+    
+    // VITAL: This gist includes key changes to make sure "cancel" works with iOS 13.
+    func signIn() {
+        let providers: [FUIAuthProvider] = [
+            FUIGoogleAuth(),
+        ]
+        if authUI.auth?.currentUser == nil {
+            self.authUI?.providers = providers
+            let loginViewController = authUI.authViewController()
+            loginViewController.modalPresentationStyle = .fullScreen
+            present(loginViewController, animated: true, completion: nil)
+        } else {
+            tableView.isHidden = false
         }
-        
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            if segue.identifier == "ShowDetail" {
-                let destination = segue.destination as! DetailTableViewController
-                let selectedIndexPath = tableView.indexPathForSelectedRow!
-                destination.workItem = workItems.workArray[selectedIndexPath.row]
-            }else{
-                if let selectedIndexPath = tableView.indexPathForSelectedRow { //not nil
-                    tableView.deselectRow(at: selectedIndexPath, animated: true)
-                }
-                
-            }
-        }
-        @IBAction func signOutPressed(_ sender: UIBarButtonItem) {
-            do {
-                try authUI!.signOut()
-                print("^^^ Successfully signed out!")
-                tableView.isHidden = true
-                signIn()
-            } catch {
-                tableView.isHidden = true
-                print("*** ERROR: Couldn't sign out")
-            }
-        }
-        
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowDetail" {
+            let destination = segue.destination as! DetailTableViewController
+            let selectedIndexPath = tableView.indexPathForSelectedRow!
+            destination.workItem = workItemss.workArray[selectedIndexPath.row]
+        }else{
+            if let selectedIndexPath = tableView.indexPathForSelectedRow { //not nil
+                tableView.deselectRow(at: selectedIndexPath, animated: true)
+            }
+            
+        }
+    }
+    
+    @IBAction func signOutPressed(_ sender: UIBarButtonItem) {
+        do {
+            try authUI!.signOut()
+            print("^^^ Successfully signed out!")
+            tableView.isHidden = true
+            signIn()
+        } catch {
+            tableView.isHidden = true
+            print("*** ERROR: Couldn't sign out")
+        }
+    }
+    
+}
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return workItems.workArray.count
+        return workItemss.workArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ShowSegue", for: indexPath)
-        cell.textLabel?.text = "\(indexPath.row + 1) \(workItems.workArray[indexPath.row].work)"
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        cell.textLabel?.text = "\(indexPath.row + 1) \(workItemss.workArray[indexPath.row].work)"
         return cell
         
     }
