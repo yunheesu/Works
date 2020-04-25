@@ -9,7 +9,7 @@
 import UIKit
 
 class DetailTableViewController: UITableViewController {
-
+    
     @IBOutlet weak var workField: UITextField!
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var availableTimeField: UITextField!
@@ -19,30 +19,33 @@ class DetailTableViewController: UITableViewController {
     
     
     var worksItem: WorksItem!
-       
-       override func viewDidLoad() {
-           super.viewDidLoad()
-           
-           if worksItem == nil { // passing empty string for starter
-               worksItem = WorksItem(name: "", work: "", time: "", number: "", notes: "")
-           }
-           workField.text = worksItem.work
-           nameField.text = worksItem.name
-           availableTimeField.text = worksItem.time
-           phoneNumberField.text = worksItem.number
-           noteTextView.text = worksItem.notes
-           
-       }
-       override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-           worksItem.work = workField.text!
-           worksItem.name = nameField.text!
-           worksItem.time = availableTimeField.text!
-           worksItem.number = phoneNumberField.text!
-           worksItem.notes = noteTextView.text!
-
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if worksItem == nil { // passing empty string for starter
+            worksItem = WorksItem(name: "", work: "", time: "", location: "", number: "", notes: "")
+            //Look at Heckathon App에 있다! (UIImage())
+        }
+        workField.text = worksItem.work
+        nameField.text = worksItem.name
+        availableTimeField.text = worksItem.time
+        locationField.text = worksItem.location
+        phoneNumberField.text = worksItem.number
+        noteTextView.text = worksItem.notes
         
     }
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        worksItem.work = workField.text!
+        worksItem.name = nameField.text!
+        worksItem.location = locationField.text!
+        worksItem.time = availableTimeField.text!
+        worksItem.number = phoneNumberField.text!
+        worksItem.notes = noteTextView.text!
+        
+        
+    }
+    
     @IBAction func cancelBarButtonPressed(_ sender: UIBarButtonItem) {
         let isPresentingInAddMode = presentingViewController is UINavigationController
         if isPresentingInAddMode {
@@ -68,5 +71,5 @@ class DetailTableViewController: UITableViewController {
         //    }
     }
     
-
+    
 }

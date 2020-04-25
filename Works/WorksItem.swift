@@ -13,6 +13,7 @@ struct WorksItem {
     var name: String
     var work: String
     var time: String
+    var location: String
     var number: String
     var notes: String
     
