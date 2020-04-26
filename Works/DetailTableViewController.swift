@@ -16,12 +16,17 @@ class DetailTableViewController: UITableViewController {
     @IBOutlet weak var phoneNumberField: UITextField!
     @IBOutlet weak var locationField: UITextField!
     @IBOutlet weak var noteTextView: UITextView!
+    @IBOutlet weak var imageView: UIImageView!
     
     
     var workItem: WorkItem!
+    var appImage: UIImage!
+    var imagePicker = UIImagePickerController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        imagePicker.delegate = self
         
         if workItem == nil { // passing empty string for starter
             workItem = WorkItem(name: "", work: "", time: "", location: "", number: "", notes: "", postingUserID: "", documentID: "")
@@ -75,4 +80,57 @@ class DetailTableViewController: UITableViewController {
     }
     
     
+    @IBAction func cameraButtonPressed(_ sender: UIBarButtonItem) {
+        cameraOrLibaryAlert()
+    }
+    
 }
+
+extension DetailTableViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            appImage = editedImage
+        }else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            appImage = originalImage
+        }
+        dismiss(animated: true) {
+            self.imageView.image = self.appImage
+        }
+        }
+    
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    func cameraOrLibaryAlert() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default) { (_) in
+            self.accessLibrary()
+        }
+        let cameraAction = UIAlertAction(title: "Camera", style: .default) { (_) in
+            self.accessCamera()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(photoLibraryAction)
+        alertController.addAction(cameraAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+        
+        
+    }
+    func accessLibrary() {
+        imagePicker.sourceType = .photoLibrary
+        present(imagePicker, animated: true, completion: nil)
+        
+    }
+    func accessCamera() {
+        if UIImagePickerController.isSourceTypeAvailable(.camera){
+            imagePicker.sourceType = .camera
+            present(imagePicker, animated: true, completion: nil)
+        }else{
+            self.oneButtonAlert(title: "Camera Not Available", message: "There is no camera avilable on this device")
+        }
+    }
+}
+
