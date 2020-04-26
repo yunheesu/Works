@@ -53,15 +53,22 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <toolbarItems>
-                        <barButtonItem style="plain" id="4Rn-Me-blJ">
-                            <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="6UO-8F-TjG">
+                        <barButtonItem style="plain" id="xIf-o1-snc">
+                            <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="rJ1-EX-4Vq">
                                 <rect key="frame" x="20" y="10.5" width="374" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="A-Z"/>
-                                    <segment title="Oldest"/>
+                                    <segment title="Z-A"/>
                                 </segments>
+                                <color key="selectedSegmentTintColor" red="0.86294347049999998" green="0.79217261080000001" blue="0.62663573029999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="sortSegmentPressed:" destination="BYZ-38-t0r" eventType="valueChanged" id="YbR-rL-PVI"/>
+                                </connections>
                             </segmentedControl>
+                            <connections>
+                                <action selector="sortSegmentPressed:" destination="BYZ-38-t0r" id="umW-Fi-TlN"/>
+                            </connections>
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="m8i-NZ-TjN">
@@ -76,9 +83,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="addBarButton" destination="lOq-CA-8lX" id="Wia-wl-a3U"/>
+                        <outlet property="sortSegmentedControl" destination="rJ1-EX-4Vq" id="Vlj-uO-ALB"/>
                         <outlet property="tableView" destination="IER-tg-BuG" id="ScQ-NK-XKJ"/>
                     </connections>
                 </viewController>
@@ -291,16 +298,21 @@
         <!--Navigation Controller-->
         <scene sceneID="kQL-Sh-YLe">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="kLn-ee-goh" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="kLn-ee-goh" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="1DZ-gr-6c3"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="kWV-rf-aM1">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" red="0.92927354569999998" green="0.93733072279999996" blue="0.93308943509999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" red="0.86294347049999998" green="0.79217261080000001" blue="0.62663573029999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="barTintColor" red="0.58072251080000004" green="0.066734083" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="w7c-6i-dHU">
+                        <rect key="frame" x="0.0" y="759" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.86294347049999998" green="0.79217261080000001" blue="0.62663573029999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="barTintColor" red="0.58072251080000004" green="0.066734083" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </toolbar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="xsg-Pl-FE3"/>
                     </connections>
@@ -317,6 +329,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Lw3-zH-FxM">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.58072251080000004" green="0.066734083" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="barTintColor" red="0.86294347049999998" green="0.79217261080000001" blue="0.62663573029999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

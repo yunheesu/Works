@@ -15,6 +15,7 @@ import GoogleSignIn
 class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addBarButton: UIBarButtonItem!
+    @IBOutlet weak var sortSegmentedControl: UISegmentedControl!
     
     var workItemss: WorkItemss!
     var authUI: FUIAuth!
@@ -34,7 +35,9 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         workItemss.loadData {
+            self.sortBasedOnSegmentPressed()
             self.tableView.reloadData()
+            
         }
     }
     
@@ -72,6 +75,24 @@ class ViewController: UIViewController {
             
         }
     }
+    func sortBasedOnSegmentPressed() {
+        switch sortSegmentedControl.selectedSegmentIndex {
+        case 0:
+            workItemss.workArray.sort(by: {$0.name < $1.name})
+        case 1:
+            workItemss.workArray.sort(by: {$0.name > $1.name})
+        default:
+            print("*** ERROR: Hey, you should have not gotten here, our segmented control should just have 3 segments")
+        }
+        tableView.reloadData()
+    }
+    
+    
+    @IBAction func sortSegmentPressed(_ sender: UISegmentedControl) {
+        sortBasedOnSegmentPressed()
+    }
+    
+    
     
     @IBAction func signOutPressed(_ sender: UIBarButtonItem) {
         do {
@@ -94,7 +115,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = "\(indexPath.row + 1) \(workItemss.workArray[indexPath.row].work)"
+        cell.textLabel?.text = "\(workItemss.workArray[indexPath.row].work)"
         return cell
         
     }
