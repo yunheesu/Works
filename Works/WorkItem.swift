@@ -134,5 +134,21 @@ class WorkItem {
     }
     
     
-    
+    func loadImage(completed: @escaping () -> ()) {
+        let storage = Storage.storage()
+        let storageRef = storage.reference().child(self.documentID).child(self.appImageUUID)
+        //5MB = 5* 1024 * 1024
+        storageRef.getData(maxSize: 5 * 1024 * 1024) { (data, error) in
+            guard error == nil else {
+                print("ERROR: could not load image from bucket \(self.documentID) for file \(self.appImageUUID).")
+                return completed()
+            }
+            guard let downloadedImage = UIImage(data: data!) else {
+                print("ERROR: could not convert data to image from bucket \(self.documentID) for file \(self.appImageUUID).")
+                return completed()
+            }
+            self.appImage = downloadedImage
+            completed()
+        }
+    }
 }

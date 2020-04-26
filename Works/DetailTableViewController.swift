@@ -31,6 +31,9 @@ class DetailTableViewController: UITableViewController {
             workItem = WorkItem(name: "", work: "", time: "", location: "", number: "", notes: "", appImage: UIImage(), appImageUUID: "", postingUserID: "", documentID: "")
             
         }
+        workItem.loadImage {
+            self.imageView.image = self.workItem.appImage 
+        }
         updateUserInterface()
         
     }
