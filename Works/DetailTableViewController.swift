@@ -20,7 +20,6 @@ class DetailTableViewController: UITableViewController {
     
     
     var workItem: WorkItem!
-    var appImage: UIImage!
     var imagePicker = UIImagePickerController()
     
     override func viewDidLoad() {
@@ -29,7 +28,7 @@ class DetailTableViewController: UITableViewController {
         imagePicker.delegate = self
         
         if workItem == nil { // passing empty string for starter
-            workItem = WorkItem(name: "", work: "", time: "", location: "", number: "", notes: "", postingUserID: "", documentID: "")
+            workItem = WorkItem(name: "", work: "", time: "", location: "", number: "", notes: "", appImage: UIImage(), appImageUUID: "", postingUserID: "", documentID: "")
             
         }
         updateUserInterface()
@@ -72,7 +71,12 @@ class DetailTableViewController: UITableViewController {
         // When reusing this code, the only changes required may be to spot.saveData (you'll likley have a different object, and it is possible that you might pass in parameters if you're saving to a longer document reference path
         workItem.saveData { success in
             if success {
+                self.workItem.saveImage { (success) in
+                    if !success {
+                        print("Warning: Could not save image")
+                    }
                 self.leaveViewController()
+                }
             } else {
                 print("*** ERROR: Couldn't leave this view controller because data wasn't saved.")
             }
@@ -90,14 +94,14 @@ extension DetailTableViewController: UINavigationControllerDelegate, UIImagePick
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-            appImage = editedImage
+            workItem.appImage = editedImage
         }else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            appImage = originalImage
+            workItem.appImage = originalImage
         }
         dismiss(animated: true) {
-            self.imageView.image = self.appImage
+            self.imageView.image = self.workItem.appImage
         }
-        }
+        } 
     
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

@@ -17,19 +17,23 @@ class WorkItem {
     var location: String
     var number: String
     var notes: String
+    var appImage: UIImage
+    var appImageUUID: String 
     var postingUserID: String
     var documentID: String
     
     var dictionary: [String: Any] {
-        return ["name": name, "work": work, "time": time, "location": location, "number": number, "notes": notes, "postingUserID": postingUserID, "documentID": documentID]
+        return ["name": name, "work": work, "time": time, "location": location, "number": number, "notes": notes, "appImageUUID": appImageUUID, "postingUserID": postingUserID, "documentID": documentID]
     }
-    init(name: String, work: String, time: String, location: String, number: String, notes: String, postingUserID: String, documentID: String) {
+    init(name: String, work: String, time: String, location: String, number: String, notes: String, appImage: UIImage, appImageUUID: String, postingUserID: String, documentID: String) {
         self.name = name
         self.work = work
         self.time = time
         self.location = location
         self.number = number
         self.notes = notes
+        self.appImage = appImage
+        self.appImageUUID = appImageUUID
         self.postingUserID = postingUserID
         self.documentID = documentID
     }
@@ -40,9 +44,10 @@ class WorkItem {
         let location = dictionary["location"] as! String? ?? ""
         let number = dictionary["number"] as! String? ?? ""
         let notes = dictionary["notes"] as! String? ?? ""
+        let appImageUUID = dictionary["appImageUUID"] as! String? ?? ""
         let postingUserID = dictionary["postingUserID"] as! String? ?? ""
         let documentID = dictionary["documentID"] as! String? ?? ""
-        self.init(name: name, work: work, time: time, location: location , number: number, notes: notes, postingUserID: postingUserID, documentID: documentID)
+        self.init(name: name, work: work, time: time, location: location , number: number, notes: notes, appImage:UIImage(), appImageUUID: appImageUUID, postingUserID: postingUserID, documentID: "")
         
     }
     
@@ -81,4 +86,53 @@ class WorkItem {
             }
         }
     }
+    func saveImage(completed: @escaping (Bool) -> ()) {
+        let db = Firestore.firestore()
+        let storage = Storage.storage()
+        //conver appImage to a Data Type so it can be saved by Firebase storage
+        guard let imageToSave = self.appImage.jpegData(compressionQuality: 0.5) else {
+            print("ERROR: could not convert image to data format")
+            return completed(false)
+        }
+        let uploadMetaData = StorageMetadata()
+        uploadMetaData.contentType = "image/jpeg"
+        if appImageUUID == "" {
+            //if there;s no UUID, then create one
+            appImageUUID = UUID().uuidString
+            
+        }
+        //create a ref to upload storage with the UUID we created
+        let storageRef = storage.reference().child(documentID).child(self.appImageUUID)
+        let uploadTask = storageRef.putData(imageToSave, metadata: uploadMetaData) { (metaData, error) in
+            guard error == nil else {
+                print("ERROR: during .putData storage upload for reference \(storageRef). Error = \(error?.localizedDescription ?? "<unknwon error>")")
+                return completed(false)
+            }
+            print("Upload Worked! Matadata is \(metaData)")
+        }
+        uploadTask.observe(.success) { (snapshot) in
+            let dataToSave = self.dictionary
+            let ref = db.collection("teams").document(self.documentID)
+            ref.setData(dataToSave) { (error) in
+                if let error = error {
+                    print("ERROR: saving document \(self.documentID) in success observer. ERROR \(error.localizedDescription)")
+                    completed(false)
+                } else {
+                    print("Document updated with ref ID \(ref.documentID)")
+                    completed(true)
+                }
+            
+            }
+        }
+        
+        uploadTask.observe(.failure) { (snapshot) in
+            if let error = snapshot.error {
+                print ("ERROR: \(error.localizedDescription) upload task for file \(self.appImageUUID)")
+            }
+            return completed(false)
+        }
+    }
+    
+    
+    
 }
